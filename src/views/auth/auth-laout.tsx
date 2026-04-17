@@ -5,7 +5,7 @@ const Authlayout:
     FC<PropsWithChildren> = ({ children }) => {
 
         return <div className={styles.container}>
-            <div className={styles.box}>{children}</div>
+            <div className={styles.boxTest}>{children}</div>
         </div>
     }
 

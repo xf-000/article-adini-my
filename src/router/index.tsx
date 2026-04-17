@@ -1,14 +1,18 @@
 import { createBrowserRouter } from 'react-router-dom'
-import Reg from '@/views/auth/reg.tsx'
+import Reg, { action as regAction } from '@/views/auth/reg.tsx'
 import Login from '@/views/auth/loginn.tsx'
 import Root from '@/views/root/root.tsx'
 import Authlayout from '@/views/auth/auth-laout.tsx'
 
 const router = createBrowserRouter([
     {
-        path: '/reg', element: <Authlayout>
-            <Reg />
-        </Authlayout>
+        path: '/reg',
+        element:
+            <Authlayout>
+                <Reg />
+            </Authlayout>,
+        action: regAction
+
     },
     {
         path: '/login', element: <Authlayout>
