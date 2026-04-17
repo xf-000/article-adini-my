@@ -1,7 +1,12 @@
 import axios from "@/api";
 
+//注册接口
+export const regApi = (data: FormData) => axios.post<null, BaseResponse>('/api/reg', data)
 
-export const regApi = (data: FormData) => axios.post('/api/reg', data)
+//登录接口
+export const loginApi = (data: FormData) => axios.post<null, LoginResponse>('/api/login', data)
+
+
 
 
 

@@ -5,7 +5,7 @@ import { ActionFunctionArgs, NavLink, redirect, useNavigation, useSubmit } from 
 import { regApi } from '@/api/auth-api'
 import to from 'await-to-js'
 
-
+//----------------注册-------------------
 const Reg: FC = () => {
 
     const submit = useSubmit()
@@ -42,7 +42,7 @@ const Reg: FC = () => {
                     { required: true, message: '请确认密码!' },
                     { pattern: /^\S{6,15}$/, message: '密码必须是6-15位的非空字符!' },
                     ({ getFieldValue }) => ({
-                        validator(_, value,) {
+                        validator(_, value) {
                             if (value == getFieldValue('password'))
                                 return Promise.resolve()
                             return Promise.reject(new Error('两次不一致!'))
@@ -74,21 +74,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const fd = await request.formData()
     // const data = Object.fromEntries(fd) as RegForm
 
-
     //-------------调用接口------------------
     const [err] = await to(regApi(fd))
     //--------------注册失败---------------
     if (err) {
-        // alert(err.response.data.message)
-        message.error(err.response.data.message)
         return null
     }
-    //----------------成功------------------
+    //--------------注册成功---------------
     message.success('注册成功')
-    return redirect('./login?uname=' + fd.get('username'))
-
-
-    return null
+    return redirect('/login?uname=' + fd.get('username'))
 }
 
 

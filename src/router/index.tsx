@@ -1,8 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom'
 import Reg, { action as regAction } from '@/views/auth/reg.tsx'
-import Login from '@/views/auth/loginn.tsx'
+import Login, { action as loginAction } from '@/views/auth/loginn.tsx'
 import Root from '@/views/root/root.tsx'
 import Authlayout from '@/views/auth/auth-laout.tsx'
+import AuthRoot from '@/views/root/auth-root'
 
 const router = createBrowserRouter([
     {
@@ -15,14 +16,18 @@ const router = createBrowserRouter([
 
     },
     {
-        path: '/login', element: <Authlayout>
+        path: '/login',
+        element: <Authlayout>
             <Login />
-        </Authlayout>
+        </Authlayout>,
+        action: loginAction
     },
     {
-        path: '/', element: <Authlayout>
-            <Root />
-        </Authlayout>
+        path: '/', element:
+            <AuthRoot>
+                <Root />
+            </AuthRoot>
+
     },
 
 ])
