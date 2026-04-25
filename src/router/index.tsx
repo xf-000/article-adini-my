@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import Reg, { action as regAction } from '@/views/auth/reg.tsx'
 import Login, { action as loginAction } from '@/views/auth/loginn.tsx'
-import Root from '@/views/root/root.tsx'
+import Root, { loader as rootLoader } from '@/views/root/root.tsx'
 import Authlayout from '@/views/auth/auth-laout.tsx'
 import AuthRoot from '@/views/root/auth-root'
 
@@ -23,13 +23,17 @@ const router = createBrowserRouter([
         action: loginAction
     },
     {
-        path: '/', element:
+        path: '/',
+        element:
             <AuthRoot>
                 <Root />
-            </AuthRoot>
+            </AuthRoot>,
+        loader: rootLoader
 
     },
 
 ])
 
 export default router
+
+

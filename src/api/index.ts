@@ -3,6 +3,7 @@ import config from '@/config.json'
 import qs from 'qs'
 import { message } from "antd";
 import useAppStore from "@/store/app-store";
+import { resetAllStore } from "@/store/resetter";
 
 
 const instance = axios.create({
@@ -55,16 +56,27 @@ instance.interceptors.request.use(
 // Add a response interceptor
 instance.interceptors.response.use(
     function (response) {
-        // Any status code that lies within the range of 2xx causes this function to trigger
-        // Do something with response data
-        return response;
+        if (response.data) {
+            // 有响应体的情况
+            return response.data
+        } else {
+            // 没有响应体，则自定义一个标准的响应体，并返回
+            return { code: 0, message: response.statusText }
+        }
     },
     function (error: AxiosError<{ code: number, message: string }>) {
         // Any status codes that fall outside the range of 2xx cause this function to trigger
         // Do something with response error
         //有响应体
         if (error.response && error.response.data) {
-            message.error(error.response.data.message)
+            if (error.response.status === 401) {
+                // token 过期了
+                message.error('登录过期，请重新登录！')
+                // 清空 store
+                resetAllStore()
+            } else {
+                message.error(error.response.data.message)
+            }
             return Promise.reject(error.response.data)
         }
         //无响应体

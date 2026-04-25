@@ -10,6 +10,8 @@ import styles from '@/views/root/css/root.module.less'
 import logo from '@/assets/images/logo.svg'
 import RootHeader from '@/components/root/header';
 import useAppStore from '@/store/app-store';
+import { initUser } from '@/store/user-store';
+
 
 
 
@@ -17,6 +19,7 @@ const { Sider, Content, Footer } = Layout;
 
 const Root: React.FC = () => {
     const collapsed = useAppStore(state => state.collapsed)
+
 
 
     return (
@@ -71,3 +74,8 @@ const Root: React.FC = () => {
 };
 
 export default Root;
+
+export const loader = () => {
+    initUser()
+    return null
+}
