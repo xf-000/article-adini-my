@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
-import {
-    UploadOutlined,
-    UserOutlined,
-    VideoCameraOutlined,
-} from '@ant-design/icons';
-import { Layout, Menu, } from 'antd';
+import React from 'react';
+
+import { Layout, } from 'antd';
 
 import styles from '@/views/root/css/root.module.less'
 import logo from '@/assets/images/logo.svg'
 import RootHeader from '@/components/root/header';
 import useAppStore from '@/store/app-store';
 import { initUser } from '@/store/user-store';
+import { getMenuApi } from '@/api/user-api';
+import to from 'await-to-js';
+import RootMenu from './menu';
+import { Outlet } from 'react-router-dom';
+
 
 
 
@@ -18,8 +19,8 @@ import { initUser } from '@/store/user-store';
 const { Sider, Content, Footer } = Layout;
 
 const Root: React.FC = () => {
-    const collapsed = useAppStore(state => state.collapsed)
 
+    const collapsed = useAppStore(state => state.collapsed)
 
 
     return (
@@ -33,28 +34,7 @@ const Root: React.FC = () => {
                     {!collapsed && <span className={styles.logoText}>文章管理系统</span>}
                 </div>
                 {/* 左侧菜单 */}
-                <Menu
-                    theme="dark"
-                    mode="inline"
-                    defaultSelectedKeys={['1']}
-                    items={[
-                        {
-                            key: '1',
-                            icon: <UserOutlined />,
-                            label: 'nav 1',
-                        },
-                        {
-                            key: '2',
-                            icon: <VideoCameraOutlined />,
-                            label: 'nav 2',
-                        },
-                        {
-                            key: '3',
-                            icon: <UploadOutlined />,
-                            label: 'nav 3',
-                        },
-                    ]}
-                />
+                <RootMenu />
             </Sider>
 
             <Layout>
@@ -62,7 +42,7 @@ const Root: React.FC = () => {
                 <RootHeader />
                 {/* 内容主体 */}
                 <Content className={styles.content}>
-                    Content
+                    <Outlet />
                 </Content>
                 {/* 底部区域 */}
                 <Footer className={styles.footer}>
@@ -75,7 +55,14 @@ const Root: React.FC = () => {
 
 export default Root;
 
-export const loader = () => {
+export const loader = async () => {
+    //获取全局用户信息
     initUser()
-    return null
+    //获取左侧菜单栏数据
+    const [err, res] = await to(getMenuApi())
+    if (err)
+        return null
+
+
+    return { menus: res.data }
 }

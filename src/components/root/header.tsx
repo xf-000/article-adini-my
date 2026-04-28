@@ -10,6 +10,7 @@ import styles from '@/components/root/header.module.less'
 
 import Logout from './logout';
 import useUserStore, { selectAvatar, selectName } from '@/store/user-store';
+import RootBreadcrumb from './breadcrumb';
 
 
 
@@ -24,13 +25,15 @@ const RootHeader: FC = () => {
 
 
     return (<Header className={styles.container}>
-        <div>
+        <div className={styles.boxLeft}>
             <Button className={styles.btnCollapsed}
                 type="text"
                 icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
                 onClick={() => setCollapsed(!collapsed)}
             />
             <span>欢迎:{name},当前位置为:</span>
+            {/* 面包屑组件 */}
+            <RootBreadcrumb />
         </div>
         <div>
             {/* 头像 */}

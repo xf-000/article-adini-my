@@ -64,38 +64,39 @@ instance.interceptors.response.use(
             return { code: 0, message: response.statusText }
         }
     },
-    function (error: AxiosError<{ code: number, message: string }>) {
-        // Any status codes that fall outside the range of 2xx cause this function to trigger
-        // Do something with response error
-        //有响应体
+    function (error: AxiosError<{ code: number; message: string }>) {
         if (error.response && error.response.data) {
+            // 有响应体的情况
             if (error.response.status === 401) {
                 // token 过期了
-                message.error('登录过期，请重新登录！')
+                useAppStore.getState().token && message.error('登录过期，请重新登录！')
                 // 清空 store
                 resetAllStore()
             } else {
                 message.error(error.response.data.message)
             }
+
             return Promise.reject(error.response.data)
-        }
-        //无响应体
-        else {
+        } else {
+            // 2. 无响应体：
+            // 定义错误的提示消息
             let msg = ''
+            // 判断错误类型，设置不同的错误消息
             switch (error.code) {
                 case 'ERR_NETWORK':
-                    msg = '您的网络似乎断开了'
+                    msg = '您的网络似乎断开了...'
                     break
                 case 'ECONNABORTED':
-                    msg = '请求超时'
+                    msg = '请求超时...'
                     break
                 default:
                     msg = error.message
+                    break
             }
+            // 展示错误消息
             message.error(msg)
-
         }
-        return Promise.reject({ code: 1, message: error.message });
+        return Promise.reject({ code: 1, message: error.message })
     }
 );
 

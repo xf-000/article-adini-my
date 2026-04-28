@@ -41,6 +41,15 @@ interface LoginResponse extends BaseResponse {
 
 }
 
+//左侧菜单ts类型
+type MenuItem = {
+    readonly key: string,
+    title?: string,
+    label: string,
+    icon: React.ReactNode,
+    children?: MenuItem[]
+}
+
 
 
 
