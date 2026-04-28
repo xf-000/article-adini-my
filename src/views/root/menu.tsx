@@ -42,7 +42,8 @@ const resolveMenuIcon = (menus: MenuItem[]) => {
 }
 
 //递归查找需要被展开的菜单项的 key 值
-const getOpenKey = (menus: MenuItem[], selectedKeys: string, parentKey: string = ''): string => {
+const getOpenKey = (menus: MenuItem[] | undefined, selectedKeys: string, parentKey: string = ''): string => {
+    if (!menus) return ''
     for (const item of menus) {
         //当前为父节点
         if (item.key == selectedKeys) {
@@ -66,13 +67,13 @@ const getOpenKey = (menus: MenuItem[], selectedKeys: string, parentKey: string =
 const rootSubmenuKeys = ['2', '3']
 
 const RootMenu: FC = () => {
-    const data = useLoaderData() as { menus: MenuItem[] }
+    const data = useLoaderData() as { menus: MenuItem[] } | null
     const navigate = useNavigate()
     const location = useLocation()
     //默认选中的菜单项的key
     const selectedKey = location.pathname === '/' ? '/home' : location.pathname
 
-    const [openKeys, setOpenKeys] = useState<string[]>([getOpenKey(data.menus, selectedKey)])
+    const [openKeys, setOpenKeys] = useState<string[]>([getOpenKey(data?.menus, selectedKey)])
 
     const onOpenChange: MenuProps['onOpenChange'] = (keys) => {
         const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1)

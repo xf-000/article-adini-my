@@ -1,4 +1,4 @@
-import type { FC } from 'react'
+import { useMemo, type FC } from 'react'
 import { Breadcrumb } from 'antd'
 import { useLoaderData, useLocation } from 'react-router-dom'
 
@@ -6,6 +6,7 @@ type BreadcrumbItem = {
     title: string
 }
 //递归函数，递归生成面包屑导航的数据源
+
 const resloveBreadcrumbItems = (menus: MenuItem[] | undefined, nowPath: string, breadcrumbItems: BreadcrumbItem[] = []): BreadcrumbItem[] | undefined => {
     if (!menus) return
 
@@ -33,7 +34,8 @@ const RootBreadcrumb: FC = () => {
     const location = useLocation()
     const nowPath = location.pathname === '/' ? '/home' : location.pathname
 
-    const items = resloveBreadcrumbItems(loaderData?.menus, nowPath)
+    const items = useMemo(() => resloveBreadcrumbItems(loaderData?.menus, nowPath), [loaderData, nowPath]
+    )
 
     return <Breadcrumb items={items} />
 }

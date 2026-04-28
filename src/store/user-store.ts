@@ -49,3 +49,9 @@ export const initUser = async () => {
 export const selectName = (state: UserStoreType) => state.user.nickname || state.user.username
 //头像
 export const selectAvatar = (state: UserStoreType) => state.user.user_pic
+//id,名称，邮箱
+export const selectUserInfo = (state: UserStoreType) => ({
+    id: state.user.id,
+    nickname: state.user.nickname,
+    email: state.user.email
+})
