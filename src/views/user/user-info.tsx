@@ -1,14 +1,18 @@
 import type { FC } from 'react'
-import { Button, Form, Input, Space } from 'antd'
+import { Button, Form, Input, message, Space } from 'antd'
 import useUserStore, { selectUserInfo } from '@/store/user-store'
+import { ActionFunctionArgs, useNavigation, useSubmit } from 'react-router-dom'
+import { updateUserInfoApi } from '@/api/user-api'
+import to from 'await-to-js'
 
 const UserInfo: FC = () => {
 
     const userInfo = useUserStore(selectUserInfo)
     const [formRef] = Form.useForm()
-
-    const onFinish = (values: unknown) => {
-        console.log('Success:', values)
+    const navigate = useNavigation()
+    const submit = useSubmit()
+    const onFinish = (values: UserInfoForm) => {
+        submit(values, { method: 'PUT' })
     }
 
     return (
@@ -45,7 +49,7 @@ const UserInfo: FC = () => {
 
             <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
                 <Space>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" loading={navigate.state !== 'idle' && { delay: 200 }}>
                         保存
                     </Button>
                     <Button type="default" onClick={() => formRef.setFieldsValue(userInfo)}>还原</Button>
@@ -57,3 +61,16 @@ const UserInfo: FC = () => {
 
 
 export default UserInfo
+
+
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+    const fd = await request.formData()
+    const [err, res] = await to(updateUserInfoApi(fd))
+
+    if (err) return
+
+    message.success('更新成功')
+
+    return null
+}

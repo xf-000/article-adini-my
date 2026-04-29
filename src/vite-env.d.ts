@@ -50,7 +50,8 @@ type MenuItem = {
     children?: MenuItem[]
 }
 
-
+//修改用户数据
+type UserInfoForm = Pick<User, 'id' | 'email' | 'nickname'>
 
 
 
