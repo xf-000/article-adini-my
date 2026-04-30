@@ -61,6 +61,13 @@ type MenuItem = {
 //修改用户数据
 type UserInfoForm = Pick<User, 'id' | 'email' | 'nickname'>
 
+//文章分类item项类型
+type CateItem = {
+    readonly id: number,
+    cate_name: string,
+    cate_alias: string
+}
+
 
 
 

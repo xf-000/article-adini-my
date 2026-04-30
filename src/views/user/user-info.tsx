@@ -66,6 +66,7 @@ export default UserInfo
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const fd = await request.formData()
+
     const [err, res] = await to(updateUserInfoApi(fd))
 
     if (err) return

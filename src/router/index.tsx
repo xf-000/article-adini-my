@@ -5,11 +5,11 @@ import Root, { loader as rootLoader } from '@/views/root/root.tsx'
 import Authlayout from '@/views/auth/auth-laout.tsx'
 import AuthRoot from '@/views/root/auth-root'
 import Home from '@/views/home/home.tsx'
-import UserAvatar from '@/views/user/user-avatar'
+import UserAvatar, { action as userAvatarAction } from '@/views/user/user-avatar'
 import UserInfo, { action as userInfoAction } from '@/views/user/user-info.tsx'
 import UserPassword, { action as userPwdAction } from '@/views/user/user-password'
 import ArticleAdd from '@/views/article/article-add'
-import ArticleCate from '@/views/article/article-cate'
+import ArticleCate, { loader as artCateLoader } from '@/views/article/article-cate'
 import ArticleEdit from '@/views/article/article-edit'
 import ArticleList from '@/views/article/article-list'
 
@@ -44,9 +44,9 @@ const router = createBrowserRouter([
             { index: true, element: <Home /> },
             { path: 'home', element: <Home /> },
             { path: 'user-info', element: <UserInfo />, action: userInfoAction },
-            { path: 'user-avatar', element: <UserAvatar /> },
+            { path: 'user-avatar', element: <UserAvatar />, action: userAvatarAction },
             { path: 'user-pwd', element: <UserPassword />, action: userPwdAction },
-            { path: 'art-cate', element: <ArticleCate /> },
+            { path: 'art-cate', element: <ArticleCate />, loader: artCateLoader },
             { path: 'art-list', element: <ArticleList /> },
             { path: 'art-add', element: <ArticleAdd /> },
             { path: 'art-edit/:id', element: <ArticleEdit /> },
