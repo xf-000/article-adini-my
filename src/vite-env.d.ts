@@ -20,6 +20,14 @@ type RegForm = {
 }
 type LoginForm = Omit<RegForm, 'repassword'>
 
+//重置密码
+type ResetPwdForm = {
+    old_pwd: string
+    new_pwd: string
+    re_pwd: string
+}
+
+
 
 //------------接口返回数据类型-------------
 

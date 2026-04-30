@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Layout, } from 'antd';
+import { Layout, Space, } from 'antd';
 
 import styles from '@/views/root/css/root.module.less'
 import logo from '@/assets/images/logo.svg'
@@ -38,12 +38,14 @@ const Root: React.FC = () => {
             </Sider>
 
             <Layout>
+
                 {/* 头部区域 */}
                 <RootHeader />
                 {/* 内容主体 */}
                 <Content className={styles.content}>
                     <Outlet />
                 </Content>
+
                 {/* 底部区域 */}
                 <Footer className={styles.footer}>
                     powered by xf

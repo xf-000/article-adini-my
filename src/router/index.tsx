@@ -1,5 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
-import Reg, { action as regAction } from '@/views/auth/reg.tsx'
+import Reg, { action, action as regAction } from '@/views/auth/reg.tsx'
 import Login, { action as loginAction } from '@/views/auth/loginn.tsx'
 import Root, { loader as rootLoader } from '@/views/root/root.tsx'
 import Authlayout from '@/views/auth/auth-laout.tsx'
@@ -7,7 +7,7 @@ import AuthRoot from '@/views/root/auth-root'
 import Home from '@/views/home/home.tsx'
 import UserAvatar from '@/views/user/user-avatar'
 import UserInfo, { action as userInfoAction } from '@/views/user/user-info.tsx'
-import UserPassword from '@/views/user/user-password'
+import UserPassword, { action as userPwdAction } from '@/views/user/user-password'
 import ArticleAdd from '@/views/article/article-add'
 import ArticleCate from '@/views/article/article-cate'
 import ArticleEdit from '@/views/article/article-edit'
@@ -45,7 +45,7 @@ const router = createBrowserRouter([
             { path: 'home', element: <Home /> },
             { path: 'user-info', element: <UserInfo />, action: userInfoAction },
             { path: 'user-avatar', element: <UserAvatar /> },
-            { path: 'user-pwd', element: <UserPassword /> },
+            { path: 'user-pwd', element: <UserPassword />, action: userPwdAction },
             { path: 'art-cate', element: <ArticleCate /> },
             { path: 'art-list', element: <ArticleList /> },
             { path: 'art-add', element: <ArticleAdd /> },
