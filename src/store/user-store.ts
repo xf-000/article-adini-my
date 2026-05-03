@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import resetters from './resetter'
+import resetters from './resetters'
 import { devtools, persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 import { getUserApi } from '@/api/user-api'

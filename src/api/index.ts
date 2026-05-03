@@ -3,12 +3,12 @@ import config from '@/config.json'
 import qs from 'qs'
 import { message } from "antd";
 import useAppStore from "@/store/app-store";
-import { resetAllStore } from "@/store/resetter";
+import { resetAllStore } from "@/store/resetters";
 
 
 const instance = axios.create({
     baseURL: config.baseURL,
-    timeout: 3000,
+    // timeout: 3000,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'x-api-key': 'ab428ee8-c6ae-4bee-86ca-a5bd3437cff5'
@@ -30,7 +30,7 @@ instance.interceptors.request.use(
     function (config) {
 
         const url = config.url
-        const method = config.method
+        const method = config.method?.toUpperCase()
         // Do something before the request is sent
 
         if ((url === '/my/article/add' && method === 'POST') || (url === '/my/article/info' && method === 'PUT')) {
@@ -59,6 +59,10 @@ instance.interceptors.request.use(
 
         return config;
 
+    },
+    function (error) {
+        // Do something with request error
+        return Promise.reject(error)
     }
 );
 
@@ -82,6 +86,7 @@ instance.interceptors.response.use(
                 useAppStore.getState().token && message.error('登录过期，请重新登录！')
                 // 清空 store
                 resetAllStore()
+
             } else {
                 message.error(error.response.data.message)
             }
@@ -101,14 +106,14 @@ instance.interceptors.response.use(
                     break
                 default:
                     msg = error.message
-                    break
             }
             // 展示错误消息
             message.error(msg)
+            return Promise.reject({ code: 1, message: error.message })
         }
-        return Promise.reject({ code: 1, message: error.message })
+
     }
-);
+)
 
 
 

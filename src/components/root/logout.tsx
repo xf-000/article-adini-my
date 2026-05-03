@@ -1,7 +1,7 @@
 import type { FC } from 'react'
 import { Button, Popconfirm } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { resetAllStore } from '@/store/resetter'
+import { resetAllStore } from '@/store/resetters'
 
 const Logout: FC = () => {
 

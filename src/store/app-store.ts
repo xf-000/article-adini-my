@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import resetters from "./resetter";
+import resetters from "./resetters";
 
 
 //-----------初始数据------------
