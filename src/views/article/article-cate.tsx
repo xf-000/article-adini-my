@@ -1,9 +1,11 @@
-import { getCateListApi } from "@/api/cate-api";
-import ButtonAdd from "@/components/root/article-cate/btn-add";
-import { Button, Space, Table, TableProps } from "antd";
+import { delCateApi, editCateApi, getCateListApi, postCateApi } from "@/api/cate-api";
+import ButtonAdd from "@/components/article-cate/btn-add";
+import ButtonDelete from "@/components/article-cate/btn-del";
+import ButtonEdit from "@/components/article-cate/btn-edit";
+import { Button, message, Space, Table, TableProps } from "antd";
 import to from "await-to-js";
 import { FC } from "react";
-import { useLoaderData } from "react-router-dom";
+import { ActionFunctionArgs, useLoaderData } from "react-router-dom";
 
 
 const ArticleCate: FC = () => {
@@ -32,8 +34,11 @@ const ArticleCate: FC = () => {
 
 
                 return <>
-                    <Button type='link' size="small" onClick={() => { console.log(record.id) }}>修改</Button>
-                    <Button type='link' size="small" onClick={() => { console.log(record.id) }}>删除</Button>
+                    {/* 修改 */}
+                    <ButtonEdit cate={record} />
+                    {/* 删除 */}
+                    <ButtonDelete id={record.id} />
+
                 </>
             },
         }
@@ -43,6 +48,7 @@ const ArticleCate: FC = () => {
 
 
     return loaderData && <Space direction="vertical" style={{ display: "flex" }}>
+        {/* //添加文章分类按钮 */}
         <ButtonAdd />
         {/* 表格区域 */}
         <Table
@@ -59,9 +65,49 @@ const ArticleCate: FC = () => {
 
 export default ArticleCate
 
+
+//loader
 export const loader = async () => {
     const [err, res] = await to(getCateListApi())
     if (err) return null
 
     return { cate: res.data }
+}
+
+
+//action
+export const action = async ({ request }: ActionFunctionArgs) => {
+    const fd = await request.formData()
+
+    //获取请求的method类型
+    const method = request.method.toUpperCase() as 'POST' | 'PUT' | 'PATCH' | 'DELETE'
+
+    //由method类型决定调用接口
+    //post请求：添加文章分类
+    if (method === "POST") {
+        const [err, res] = await to(postCateApi(fd))
+        //失败
+        if (err) return null
+        //成功
+        message.success('添加成功')
+    }
+    //put请求：修改文章分类
+    else if (method === 'PUT') {
+        const [err, res] = await to(editCateApi(fd))
+        //失败
+        if (err) return null
+        //成功
+        message.success('修改成功')
+    }
+    //delete请求:删除文章
+    else if (method === 'DELETE') {
+        const [err, res] = await to(delCateApi(fd))
+        //失败
+        if (err) return null
+        //成功
+        message.success('删除成功')
+    }
+
+
+    return true
 }

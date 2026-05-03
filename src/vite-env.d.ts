@@ -11,6 +11,9 @@ type User = {
     user_pic?: string
 }
 
+//添加文章current=base 的Form类型
+type ArticleAddBaseForm = Partial<Pick<ArticleAddForm, 'title' | 'cate_id'>>
+
 
 // ------------请求体数据类型------------
 type RegForm = {
@@ -27,6 +30,18 @@ type ResetPwdForm = {
     re_pwd: string
 }
 
+//添加文章分类
+type ArtCateAddForm = Omit<CateItem, 'id'>
+
+//添加文章||文章基本信息
+type ArticleAddForm = {
+    title: string
+    cate_id: string
+    content: string
+    state: '草稿' | '已发布'
+    cover_img: Blob
+    [x: string]: string | Blob
+}
 
 
 //------------接口返回数据类型-------------
@@ -67,6 +82,7 @@ type CateItem = {
     cate_name: string,
     cate_alias: string
 }
+
 
 
 

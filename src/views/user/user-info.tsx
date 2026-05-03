@@ -16,7 +16,14 @@ const UserInfo: FC = () => {
     }
 
     return (
-        <Form form={formRef} labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} style={{ maxWidth: 600 }} initialValues={userInfo} onFinish={onFinish} autoComplete="off">
+        <Form
+            form={formRef}
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 16 }}
+            style={{ maxWidth: 600 }}
+            initialValues={userInfo}
+            onFinish={onFinish}
+            autoComplete="off">
 
             <Form.Item label="id" name="id" hidden>
                 <Input readOnly />
@@ -49,10 +56,18 @@ const UserInfo: FC = () => {
 
             <Form.Item wrapperCol={{ offset: 4, span: 16 }}>
                 <Space>
-                    <Button type="primary" htmlType="submit" loading={navigate.state !== 'idle' && { delay: 200 }}>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        loading={navigate.state !== 'idle' && { delay: 200 }}>
                         保存
                     </Button>
-                    <Button type="default" onClick={() => formRef.setFieldsValue(userInfo)}>还原</Button>
+
+                    <Button
+                        type="default"
+                        onClick={() => formRef.setFieldsValue(userInfo)}>
+                        还原
+                    </Button>
                 </Space>
             </Form.Item>
         </Form>

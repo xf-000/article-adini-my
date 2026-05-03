@@ -12,8 +12,10 @@ const UserAvatar: FC = () => {
     const [newAvatar, setNewAvatar] = useState('')
     const submit = useSubmit()
     const navigation = useNavigation()
+
+    //管理保存按钮状态
     const isDisable = useMemo(() =>
-        !newAvatar || newAvatar === avatar //选择的新头像和原来的头像不一样，返回true
+        !newAvatar || newAvatar === avatar //选择的新头像和原来的头像不一样，返回false
 
         , [newAvatar])
 
@@ -41,14 +43,28 @@ const UserAvatar: FC = () => {
 
     return <Space direction="vertical">
         {newAvatar || avatar ?
+            //数据库有头像直接渲染头像，若修改了图像则用修改的头像
             (<Avatar size={300} shape="square" src={newAvatar || avatar} />) :
+            //数据库无头像
             (<Avatar size={300} shape="square" onClick={showDialog}>请选择头像</Avatar>)}
 
 
         <Space>
             <Button onClick={showDialog}>选择照片</Button>
-            <Button type="primary" disabled={isDisable} loading={navigation.state !== 'idle' && { delay: 200 }} onClick={saveAvatar}>保存头像</Button>
-            <input type="file" accept="image/*" style={{ display: "none" }} ref={iptRef} onChange={onFileChange} />
+
+            <Button
+                type="primary"
+                disabled={isDisable}
+                loading={navigation.state !== 'idle' && { delay: 200 }}
+                onClick={saveAvatar}>保存头像
+            </Button>
+
+            <input
+                type="file"
+                accept="image/*"
+                style={{ display: "none" }}
+                ref={iptRef}
+                onChange={onFileChange} />
         </Space>
     </Space>
 }

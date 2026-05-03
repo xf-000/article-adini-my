@@ -20,9 +20,9 @@ const useUserStore = create<UserStoreType>()(
                     //store里的数据
                     return { ...initState }
                 },
-                { name: 'user-store1' }//数据持久化配置
+                { name: 'user-store' }//数据持久化配置
             ),
-            { name: 'user-store2' }//调试工具的配置
+            { name: 'user-store' }//调试工具的配置
         )
     )
 )

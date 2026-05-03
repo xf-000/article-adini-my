@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosRequestTransformer } from "axios";
 import config from '@/config.json'
 import qs from 'qs'
 import { message } from "antd";
@@ -16,6 +16,14 @@ const instance = axios.create({
 
 })
 
+//请求体转换器
+const requestTransformer: AxiosRequestTransformer = (data) => {
+    if (data instanceof FormData) {
+        return qs.stringify(Object.fromEntries(data))
+    } else {
+        return qs.stringify(data)
+    }
+}
 
 // Add a request interceptor
 instance.interceptors.request.use(
@@ -27,18 +35,20 @@ instance.interceptors.request.use(
 
         if ((url === '/my/article/add' && method === 'POST') || (url === '/my/article/info' && method === 'PUT')) {
             config.transformRequest = []
-
         }
         else {
-            config.transformRequest =
-                (data) => {
-                    if (data instanceof FormData) {
-                        const obj = Object.fromEntries(data)
-                        return qs.stringify(obj)
-                    } else {
-                        return qs.stringify(data)
-                    }
+            //挂载请求体转换器
+            config.transformRequest = requestTransformer
+        }
+        // 请求头的params 转换器，把 FormData 格式的请求头数据转换为 querystring 格式的查询字符串
+        config.paramsSerializer = {
+            serialize(params) {
+                if (params instanceof FormData) {
+                    return qs.stringify(Object.fromEntries(params))
+                } else {
+                    return qs.stringify(params)
                 }
+            }
         }
 
         const token = useAppStore.getState().token

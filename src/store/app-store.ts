@@ -23,9 +23,9 @@ const useAppStore = create<AppStoreType>()(
                     //store中的数据
                     return { ...initState }
                 },
-                { name: 'app-store1' }//数据持久化配置
+                { name: 'app-store' }//数据持久化配置
             ),
-            { name: 'app-store2' }//调试工具的配置
+            { name: 'app-store' }//调试工具的配置
         )
     )
 )

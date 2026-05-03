@@ -30,6 +30,7 @@ const iconMap = {
     KeyOutlined: <KeyOutlined />
 }
 
+//递归处理菜单图标项
 const resolveMenuIcon = (menus: MenuItem[]) => {
     for (const menu of menus) {
         const iconName = menu.icon as keyof typeof iconMap
