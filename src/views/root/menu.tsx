@@ -1,6 +1,6 @@
 import { FC, useState } from "react"
 import { Menu, MenuProps, } from 'antd';
-import { useLoaderData, useLocation, useNavigate } from "react-router-dom";
+import { useAsyncValue, useLoaderData, useLocation, useNavigate } from "react-router-dom";
 import {
     HomeOutlined,
     ReadOutlined,
@@ -64,17 +64,22 @@ const getOpenKey = (menus: MenuItem[] | undefined, selectedKeys: string, parentK
     return ''
 }
 
-//菜单栏组件
+//------------------菜单栏组件-------------
+//定义主菜单
 const rootSubmenuKeys = ['2', '3']
 
+
+
+
 const RootMenu: FC = () => {
-    const data = useLoaderData() as { menus: MenuItem[] } | null
+    const [menuResult] = useAsyncValue() as [BaseResponse<MenuItem[]>]
+    const menus = menuResult.data || []
     const navigate = useNavigate()
     const location = useLocation()
     //默认选中的菜单项的key
     const selectedKey = location.pathname === '/' ? '/home' : location.pathname
 
-    const [openKeys, setOpenKeys] = useState<string[]>([getOpenKey(data?.menus, selectedKey)])
+    const [openKeys, setOpenKeys] = useState<string[]>([getOpenKey(menus, selectedKey)])
 
     const onOpenChange: MenuProps['onOpenChange'] = (keys) => {
         const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1)
@@ -86,11 +91,9 @@ const RootMenu: FC = () => {
     }
 
 
+    // if (!data) return
 
-
-    if (!data) return
-
-    const { menus } = data
+    // const { menus } = data
     //递归处理侧边栏图标
     resolveMenuIcon(menus)
 

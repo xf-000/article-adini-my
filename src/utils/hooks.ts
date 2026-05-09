@@ -19,7 +19,11 @@ export const useNavSubmitting = (method: Method, pathname?: string) => {
     const navigation = useNavigation()
     const location = useLocation()
 
-    const submitting = navigation.state === 'submitting' && navigation.formMethod.toUpperCase() === method && navigation.formAction === (pathname || location.pathname)
+    const submitting = navigation.state === 'submitting' &&
+        //提交方法匹配
+        navigation.formMethod.toUpperCase() === method &&
+        //触发特定的action
+        navigation.formAction === (pathname || location.pathname)
 
     return submitting
 }

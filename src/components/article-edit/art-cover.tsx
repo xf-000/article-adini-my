@@ -1,11 +1,13 @@
-import useArtAddStore, { Move, setCurrent, setArticleCover, selectCover } from "@/store/art-add-store"
+import { Move } from "@/store/art-add-store"
+import useArticleEditStore, { selectCover, setArticleCover, updateCurrent } from "@/store/art-edit-store"
 import { Avatar, Button, message, Space } from "antd"
 import { FC, useRef } from "react"
 
 
-const ArticleCover: FC = () => {
+const EditCover: FC = () => {
     const iptRef = useRef<HTMLInputElement>(null)
-    const coverUrl = useArtAddStore(selectCover)
+
+    const coverUrl = useArticleEditStore(selectCover)
 
 
 
@@ -20,6 +22,7 @@ const ArticleCover: FC = () => {
 
         setArticleCover(files[0])
     }
+
 
     return <>
         <Space direction="vertical">
@@ -46,7 +49,7 @@ const ArticleCover: FC = () => {
             <Space direction="horizontal">
                 <Button
                     type="primary"
-                    onClick={() => setCurrent(Move.pre)}
+                    onClick={() => updateCurrent(Move.pre)}
                 >上一步
                 </Button>
 
@@ -60,7 +63,7 @@ const ArticleCover: FC = () => {
 
                 <Button
                     type="primary"
-                    onClick={() => setCurrent(Move.next)}
+                    onClick={() => updateCurrent(Move.next)}
                     disabled={!coverUrl}
                 >下一步
                 </Button>
@@ -73,5 +76,5 @@ const ArticleCover: FC = () => {
     </>
 }
 
-export default ArticleCover
+export default EditCover
 

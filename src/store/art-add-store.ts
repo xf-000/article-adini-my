@@ -7,10 +7,10 @@ import { immer } from "zustand/middleware/immer";
 
 
 
-type ArtAddStore = {
+export type ArtAddStore = {
     current: ArticleSteps
     article: ArticleAddForm
-    _hasHydrated: boolean
+    _hasHydrated: boolean //判断是否读取完持久化数据
 }
 
 //添加文章进度条的step
@@ -50,7 +50,7 @@ const useArtAddStore = create<ArtAddStore>()(
                     name: 'art-add-store',
                     storage: createStorage<ArtAddStore>(), onRehydrateStorage() {
                         return () => {
-                            //数据异步读取完毕执行以下函数
+                            //本地数据异步读取完毕执行以下函数
                             useArtAddStore.setState((state) => {
                                 state._hasHydrated = true
                             })
@@ -102,6 +102,20 @@ export const setArticleState = (artState: '草稿' | '已发布') => {
     })
 }
 
+//清空本地存储的文章信息
+export const clearArticle = () => {
+    useArtAddStore.setState((state) => {
+        state.article = {} as ArticleAddForm
+    })
+}
+
+//重置current的值
+export const resetCurrent = () => {
+    useArtAddStore.setState((state) => {
+        state.current = ArticleSteps.base
+    })
+}
+
 
 
 
@@ -114,7 +128,7 @@ export const selectArticleBase = (state: ArtAddStore) => ({
     // cover_img: Blob
 })
 
-
+//选择文章封面
 export const selectCover = (state: ArtAddStore) => {
     const cover = state.article.cover_img
     if (cover) {
@@ -125,3 +139,4 @@ export const selectCover = (state: ArtAddStore) => {
         return null
     }
 }
+

@@ -2,14 +2,16 @@ import { delCateApi, editCateApi, getCateListApi, postCateApi } from "@/api/cate
 import ButtonAdd from "@/components/article-cate/btn-add";
 import ButtonDelete from "@/components/article-cate/btn-del";
 import ButtonEdit from "@/components/article-cate/btn-edit";
-import { Button, message, Space, Table, TableProps } from "antd";
+import LoaderErrorElement from "@/components/common/loader-error-element";
+import { message, Space, Table, TableProps } from "antd";
 import to from "await-to-js";
-import { FC } from "react";
-import { ActionFunctionArgs, useLoaderData } from "react-router-dom";
+import { FC, Suspense } from "react";
+import { ActionFunctionArgs, Await, defer, useLoaderData } from "react-router-dom";
 
 
 const ArticleCate: FC = () => {
-    const loaderData = useLoaderData() as { cate: CateItem[] } | null
+    const loaderData = useLoaderData() as { result: Promise<BaseResponse<CateItem[]>> }
+
     const columns: TableProps<CateItem>['columns'] = [
         {
             title: '序号',
@@ -46,32 +48,43 @@ const ArticleCate: FC = () => {
 
     ]
 
+    return (
+        <Suspense fallback={<Table loading={true} />}>
+            <Await resolve={loaderData.result} errorElement={<LoaderErrorElement />}>
+                {
+                    (result: BaseResponse<CateItem[]>) =>
+                        <Space direction="vertical" style={{ display: "flex" }}>
+                            {/* //添加文章分类按钮 */}
+                            <ButtonAdd />
+                            {/* 表格区域 */}
+                            <Table
+                                dataSource={result.data}
+                                columns={columns}
+                                size="middle"
+                                rowKey='id'
+                                pagination={false}
+                                bordered
+                            />
+                        </Space>
+                }
+            </Await>
+        </Suspense>
+    )
 
-    return loaderData && <Space direction="vertical" style={{ display: "flex" }}>
-        {/* //添加文章分类按钮 */}
-        <ButtonAdd />
-        {/* 表格区域 */}
-        <Table
-            dataSource={loaderData.cate}
-            columns={columns}
-            size="middle"
-            rowKey='id'
-            pagination={false}
-            bordered
-        />
-    </Space>
 
 }
 
 export default ArticleCate
 
 
-//loader
-export const loader = async () => {
-    const [err, res] = await to(getCateListApi())
-    if (err) return null
 
-    return { cate: res.data }
+
+//loader 
+export const loader = async () => {
+    // 调用接口请求文章分类列表
+    const result = getCateListApi()
+
+    return defer({ result })
 }
 
 
@@ -83,25 +96,25 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     const method = request.method.toUpperCase() as 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
     //由method类型决定调用接口
-    //post请求：添加文章分类
+    //1.post请求：添加文章分类
     if (method === "POST") {
-        const [err, res] = await to(postCateApi(fd))
+        const [err] = await to(postCateApi(fd))
         //失败
         if (err) return null
         //成功
         message.success('添加成功')
     }
-    //put请求：修改文章分类
+    //2.put请求：修改文章分类
     else if (method === 'PUT') {
-        const [err, res] = await to(editCateApi(fd))
+        const [err] = await to(editCateApi(fd))
         //失败
         if (err) return null
         //成功
         message.success('修改成功')
     }
-    //delete请求:删除文章
+    //3.delete请求:删除文章
     else if (method === 'DELETE') {
-        const [err, res] = await to(delCateApi(fd))
+        const [err] = await to(delCateApi(fd))
         //失败
         if (err) return null
         //成功

@@ -1,15 +1,16 @@
 import type { FC } from 'react'
 import { Button, Form, Input, message, Space } from 'antd'
 import useUserStore, { selectUserInfo } from '@/store/user-store'
-import { ActionFunctionArgs, useNavigation, useSubmit } from 'react-router-dom'
+import { ActionFunctionArgs, useSubmit } from 'react-router-dom'
 import { updateUserInfoApi } from '@/api/user-api'
 import to from 'await-to-js'
+import { useNavSubmitting } from '@/utils/hooks'
 
 const UserInfo: FC = () => {
 
     const userInfo = useUserStore(selectUserInfo)
     const [formRef] = Form.useForm()
-    const navigate = useNavigation()
+    const submitting = useNavSubmitting('PUT')
     const submit = useSubmit()
     const onFinish = (values: UserInfoForm) => {
         submit(values, { method: 'PUT' })
@@ -59,7 +60,7 @@ const UserInfo: FC = () => {
                     <Button
                         type="primary"
                         htmlType="submit"
-                        loading={navigate.state !== 'idle' && { delay: 200 }}>
+                        loading={submitting && { delay: 200 }}>
                         保存
                     </Button>
 
@@ -82,7 +83,7 @@ export default UserInfo
 export const action = async ({ request }: ActionFunctionArgs) => {
     const fd = await request.formData()
 
-    const [err, res] = await to(updateUserInfoApi(fd))
+    const [err] = await to(updateUserInfoApi(fd))
 
     if (err) return
 

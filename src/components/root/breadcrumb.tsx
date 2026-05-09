@@ -1,6 +1,8 @@
+//面包屑组件
+
 import { useMemo, type FC } from 'react'
 import { Breadcrumb } from 'antd'
-import { useLoaderData, useLocation } from 'react-router-dom'
+import { matchPath, useAsyncValue, useLocation } from 'react-router-dom'
 
 type BreadcrumbItem = {
     title: string
@@ -11,7 +13,10 @@ const resloveBreadcrumbItems = (menus: MenuItem[] | undefined, nowPath: string, 
     if (!menus) return
 
     for (const item of menus) {
-        if (item.key === nowPath) {
+        //路由匹配
+        const matchResult = matchPath(item.key, nowPath)
+        if (matchResult) {
+
             breadcrumbItems.unshift({ title: item.label })
             return breadcrumbItems
         }
@@ -29,12 +34,15 @@ const resloveBreadcrumbItems = (menus: MenuItem[] | undefined, nowPath: string, 
 
 }
 
+
 const RootBreadcrumb: FC = () => {
-    const loaderData = useLoaderData() as { menus: MenuItem[] } | null
+    const [menuResult] = useAsyncValue() as [BaseResponse<MenuItem[]>]
+    const menus = useMemo(() => menuResult.data || [], [menuResult])
     const location = useLocation()
     const nowPath = location.pathname === '/' ? '/home' : location.pathname
 
-    const items = useMemo(() => resloveBreadcrumbItems(loaderData?.menus, nowPath), [loaderData, nowPath]
+    const items = useMemo(
+        () => resloveBreadcrumbItems(menus, nowPath), [menus, nowPath]
     )
 
     return <Breadcrumb items={items} />

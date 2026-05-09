@@ -1,15 +1,16 @@
 import type { FC } from 'react'
 import { Button, Form, Input, message, Space } from 'antd'
 import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import { ActionFunctionArgs, NavLink, redirect, useNavigation, useSubmit } from 'react-router-dom'
+import { ActionFunctionArgs, NavLink, redirect, useSubmit } from 'react-router-dom'
 import { regApi } from '@/api/auth-api'
 import to from 'await-to-js'
+import { useNavSubmitting } from '@/utils/hooks'
 
 //----------------注册-------------------
 const Reg: FC = () => {
 
     const submit = useSubmit()
-    const navigation = useNavigation()
+    const submintting = useNavSubmitting('POST')
     const onFinish = (values: RegForm) => {
         submit(values, {
             method: 'POST'
@@ -56,7 +57,12 @@ const Reg: FC = () => {
 
             <Form.Item>
                 <Space direction="vertical">
-                    <Button type="primary" htmlType="submit" loading={navigation.state !== 'idle' && { delay: 200 }}>
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        loading={submintting && { delay: 200 }}
+                        disabled={submintting}
+                    >
                         Register
                     </Button>
                     <div>

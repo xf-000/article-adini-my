@@ -4,24 +4,26 @@ import { ActionFunctionArgs, useActionData, useNavigation, useSubmit } from 'rea
 
 import { updatePwdApi } from '@/api/user-api'
 import to from 'await-to-js'
+import { useNavSubmitting } from '@/utils/hooks'
 
 const UserPassword: FC = () => {
     const actionData = useActionData() as { result: boolean } | null
     const [formRef] = Form.useForm()
     const submit = useSubmit()
-    const navigation = useNavigation()
+    const submitting = useNavSubmitting('PATCH')
 
     //密码修改成功
     if (actionData?.result)
         formRef.resetFields()
 
     const onFinish = (values: ResetPwdForm) => {
+        if (submitting) return
         submit(values, { method: 'PATCH' })
     }
 
     return (
         <Form form={formRef} labelCol={{ span: 4 }} wrapperCol={{ span: 16 }} style={{ maxWidth: 600 }} onFinish={onFinish} autoComplete="off">
-            <Spin spinning={navigation.state !== 'idle'} delay={200}>
+            <Spin spinning={submitting} delay={200}>
                 <Form.Item
                     label="原密码"
                     name="old_pwd"
@@ -95,7 +97,7 @@ export default UserPassword
 
 export const action = async ({ request }: ActionFunctionArgs) => {
     const fd = await request.formData()
-    const [err, res] = await to(updatePwdApi(fd))
+    const [err] = await to(updatePwdApi(fd))
 
     if (err) return null
     message.success('密码修改成功')

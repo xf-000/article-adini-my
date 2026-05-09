@@ -36,7 +36,12 @@ const Login: FC = () => {
 
             <Form.Item>
                 <Space direction="vertical">
-                    <Button type="primary" htmlType="submit" loading={loginFetcher.state != 'idle' && { delay: 200 }}
+                    {/* //login按钮 */}
+                    <Button
+                        type="primary"
+                        htmlType="submit"
+                        loading={loginFetcher.state === 'submitting' && { delay: 200 }}
+                        disabled={loginFetcher.state === 'submitting'}
                     >
                         Log in
                     </Button>

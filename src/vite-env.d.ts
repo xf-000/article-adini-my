@@ -14,6 +14,9 @@ type User = {
 //添加文章current=base 的Form类型
 type ArticleAddBaseForm = Partial<Pick<ArticleAddForm, 'title' | 'cate_id'>>
 
+////修改文章current=base 的Form类型
+type ArticleEditBaseForm = ArticleAddBaseForm
+
 
 // ------------请求体数据类型------------
 type RegForm = {
@@ -41,6 +44,15 @@ type ArticleAddForm = {
     state: '草稿' | '已发布'
     cover_img: Blob
     [x: string]: string | Blob
+}
+
+//文章的列表数据
+type ArtListQuery = {
+    pagenum: number,
+    pagesize: number,
+    cate_id: number | string,
+    state: string
+
 }
 
 
@@ -83,6 +95,22 @@ type CateItem = {
     cate_alias: string
 }
 
+//文章的类型
+type Article = {
+    readonly "id": number
+    "title": string
+    "pub_date": string,
+    "state": "草稿" | '已发布',
+    "cate_name": string
+}
+
+//文章列表接口返回的数据类型
+interface ArticleListResponse extends BaseResponse<Article[]> {
+    total: number
+}
+
+//根据id获取文章的接口返回数据 ||  文章详情的数据
+type ArticleEditForm = ArticleAddForm & { readonly id: string }
 
 
 
