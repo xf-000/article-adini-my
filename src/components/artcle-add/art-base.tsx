@@ -11,7 +11,7 @@ const ArticleBase: FC = () => {
     const [formRef] = Form.useForm()
     const baseForm = useArtAddStore(selectArticleBase)
 
-    const onFinish = (values: unknown) => {
+    const onFinish = () => {
         setCurrent(Move.next)
     }
 

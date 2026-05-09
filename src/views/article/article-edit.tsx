@@ -1,6 +1,6 @@
-import useArticleEditStore, { initArticle, resetCurrent, selectArticle, updateCurrent } from "@/store/art-edit-store";
+import useArticleEditStore, { initArticle, resetCurrent, updateCurrent } from "@/store/art-edit-store";
 import { message, Modal, Steps } from "antd";
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef } from "react";
 import { defer, LoaderFunctionArgs, useBeforeUnload, useBlocker } from "react-router-dom";
 import { stepItems } from "./article-add";
 import { ArticleSteps } from "@/store/art-add-store";

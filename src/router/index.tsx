@@ -1,98 +1,176 @@
 import { createBrowserRouter } from 'react-router-dom'
-import Reg, { action, action as regAction } from '@/views/auth/reg.tsx'
-import Login, { action as loginAction } from '@/views/auth/loginn.tsx'
-import Root, { loader as rootLoader } from '@/views/root/root.tsx'
 import Authlayout from '@/views/auth/auth-laout.tsx'
 import AuthRoot from '@/views/root/auth-root'
-import Home from '@/views/home/home.tsx'
-import UserAvatar, { action as userAvatarAction } from '@/views/user/user-avatar'
-import UserInfo, { action as userInfoAction } from '@/views/user/user-info.tsx'
-import UserPassword, { action as userPwdAction } from '@/views/user/user-password'
-import ArticleAdd, { loader as artAddLoader, action as artAddAction } from '@/views/article/article-add'
-import ArticleCate, { loader as artCateLoader, action as artCateAction } from '@/views/article/article-cate'
-import ArticleEdit, { loader as artEditLoader, action as artEditAction } from '@/views/article/article-edit'
-import ArticleList, { loader as artListLoader, action as artListAction } from '@/views/article/article-list'
-
-
-
+import RouterErrorElement from '@/components/common/router-error-element'
+import PageNotFound from '@/components/common/404'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 const router = createBrowserRouter([
     {
         path: '/reg',
-        element:
-            <Authlayout>
-                <Reg />
-            </Authlayout>,
-        action: regAction
+        errorElement: <RouterErrorElement />,
+        async lazy() {
+            const { default: Reg, action } = await import('@/views/auth/reg.tsx')
+            return {
+                element: <Authlayout>
+                    <Reg />
+                </Authlayout>,
+                action
+            }
+        }
 
     },
     {
         path: '/login',
-        element: <Authlayout>
-            <Login />
-        </Authlayout>,
-        action: loginAction
+        errorElement: <RouterErrorElement />,
+        async lazy() {
+            const { default: Login, action } = await import('@/views/auth/loginn.tsx')
+            return {
+                element: <Authlayout>
+                    <Login />
+                </Authlayout>,
+                action
+            }
+        }
     },
     {
         path: '/',
-        element:
-            <AuthRoot>
-                <Root />
-            </AuthRoot>,
-        loader: rootLoader,
-        children: [
-            { index: true, element: <Home /> },
-            { path: 'home', element: <Home /> },
-            {
-                path: 'user-info',
-                element: <UserInfo />,
-                action: userInfoAction
-            },
-            {
-                path: 'user-avatar',
-                element: <UserAvatar />,
-                action: userAvatarAction
-            },
-            {
-                path: 'user-pwd',
-                element: <UserPassword />,
-                action: userPwdAction
-            },
-            {
-                path: 'art-cate',
-                element: <ArticleCate />,
-                loader: artCateLoader,
-                action: artCateAction
-            },
-            {
-                path: 'art-list',
-                element: <ArticleList />,
-                loader: artListLoader,
-                action: artListAction
-            },
-            {
-                path: 'art-add',
-                element: <ArticleAdd />,
-                loader: artAddLoader,
-                action: artAddAction,
-                shouldRevalidate: () => {
-                    return false
-                }
-            },
-            {
-                path: 'art-edit/:id',
-                element: <ArticleEdit />,
-                loader: artEditLoader,
-                action: artEditAction,
-                shouldRevalidate: () => {
-                    return false
-                }
-            },
-        ]
+        errorElement: <RouterErrorElement />,
+        async lazy() {
+            const { default: Root, loader } = await import('@/views/root/root.tsx')
+            return {
+                element: <AuthRoot>
+                    <Root />
+                </AuthRoot>,
+                loader
+            }
+        },
 
+        children: [
+            {
+                errorElement: <RouterErrorElement />,
+                children: [
+                    {
+                        index: true,
+                        async lazy() {
+                            const { default: Home } = await import('@/views/home/home.tsx')
+                            return {
+                                Component: Home
+                            }
+                        }
+                    },
+                    {
+                        path: 'home',
+                        async lazy() {
+                            const { default: Home } = await import('@/views/home/home.tsx')
+                            return {
+                                Component: Home
+                            }
+                        }
+                    },
+                    {
+                        path: 'user-info',
+                        async lazy() {
+                            const { default: UserInfo, action } = await import('@/views/user/user-info.tsx')
+                            return {
+                                Component: UserInfo,
+                                action
+                            }
+                        }
+                    },
+                    {
+                        path: 'user-avatar',
+                        async lazy() {
+                            const { default: UserAvatar, action } = await import('@/views/user/user-avatar')
+                            return {
+                                Component: UserAvatar,
+                                action
+                            }
+                        }
+                    },
+                    {
+                        path: 'user-pwd',
+                        async lazy() {
+                            const { default: UserPassword, action } = await import('@/views/user/user-password')
+                            return {
+                                Component: UserPassword,
+                                action
+                            }
+                        }
+                    },
+                    {
+                        path: 'art-cate',
+                        async lazy() {
+                            const { default: ArticleCate, loader, action } = await import('@/views/article/article-cate')
+                            return {
+                                Component: ArticleCate,
+                                action,
+                                loader
+                            }
+                        }
+                    },
+                    {
+                        path: 'art-list',
+                        async lazy() {
+                            const { default: ArticleList, loader, action } = await import('@/views/article/article-list')
+                            return {
+                                Component: ArticleList,
+                                action,
+                                loader
+                            }
+                        }
+                    },
+                    {
+                        path: 'art-add',
+                        shouldRevalidate: () => {
+                            return false
+                        },
+                        async lazy() {
+                            const { default: ArticleAdd, loader, action } = await import('@/views/article/article-add')
+                            return {
+                                Component: ArticleAdd,
+                                action,
+                                loader
+                            }
+                        }
+                    },
+                    {
+                        path: 'art-edit/:id',
+                        shouldRevalidate: () => {
+                            return false
+                        },
+                        async lazy() {
+                            const { default: ArticleEdit, loader, action } = await import('@/views/article/article-edit')
+                            return {
+                                Component: ArticleEdit,
+                                action,
+                                loader
+                            }
+                        }
+                    },
+                    {
+                        path: '*', element: <PageNotFound />
+                    }
+                ]
+            }
+        ]
     },
 
 ])
+
+router.subscribe((state) => {
+    if (state.navigation.location) {
+        //正在请求资源
+        //展示顶部进度条提示用户当前状态
+        NProgress.start()
+
+    } else {
+        //没有请求页面资源
+        //隐藏进度条
+        NProgress.done()
+    }
+})
 
 export default router
 

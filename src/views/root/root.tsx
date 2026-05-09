@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 
-import { Layout, Space, Spin, } from 'antd';
+import { Layout, Spin, } from 'antd';
 
 import styles from '@/views/root/css/root.module.less'
 import logo from '@/assets/images/logo.svg'
@@ -8,7 +8,6 @@ import RootHeader from '@/components/root/header';
 import useAppStore from '@/store/app-store';
 import { initUser } from '@/store/user-store';
 import { getMenuApi } from '@/api/user-api';
-import to from 'await-to-js';
 import RootMenu from './menu';
 import { Await, defer, Outlet, useLoaderData } from 'react-router-dom';
 

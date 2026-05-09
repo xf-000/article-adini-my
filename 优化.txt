@@ -95,3 +95,45 @@ useAsyncError 是一个用于从最近的 <Await> 组件中获取 Promise 失败
 12.
 navigate('/art-edit/' + id, { state: location.search })
 通过useLocation（）.state可以获取到state数据
+
+13.
+matchPath('/art-edit/:id', '/art-erit/123')
+//第一个参数：pattern模式，可以是路由的path地址.如/art-edit/:id
+//第二个参数：实际URL地址中的路径例.如/art-erit/123
+//例子返回true
+
+14.matchRoutes(router.routes, nextUrl)
+router=createBrowserRouter([])
+//第一个参数：router中的的对象
+//第二个参数：要进行匹配的路由
+匹配成功返回true
+
+15.路由懒加载
+
+
+
+subscribe订阅(router里的index.tsx)
+16.router.subscribe
+router.subscribe((state) => {
+    if (state.navigation.location) {
+        //正在请求资源
+        //展示顶部进度条提示用户当前状态
+        NProgress.start()
+
+    } else {
+        //没有请求页面资源
+        //隐藏进度条
+        NProgress.done()
+    }
+})
+state.navigation.loading有值的时候代表正在请求资源，此时state为loading
+反之state为idle
+
+
+
+17.nprogress进度条，npm网站（253）
+
+
+18.项目打包时按照文件类型组织文件夹
+TIP
+参考文档：build.rollupOptions、output.assetFileNames

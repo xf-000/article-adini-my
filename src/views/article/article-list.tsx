@@ -24,6 +24,7 @@ const ArticleList: FC = () => {
     return (
         <Suspense fallback={<Table loading={true} />}>
             <Await resolve={loaderData.result} errorElement={<LoaderErrorElement />}>
+
                 {(result: [BaseResponse<CateItem[]>, ArticleListResponse]) => {
                     const artListResult = result[1]
                     return (

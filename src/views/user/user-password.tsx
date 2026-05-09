@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { Button, Form, Input, message, Space, Spin } from 'antd'
-import { ActionFunctionArgs, useActionData, useNavigation, useSubmit } from 'react-router-dom'
+import { ActionFunctionArgs, useActionData, useSubmit } from 'react-router-dom'
 
 import { updatePwdApi } from '@/api/user-api'
 import to from 'await-to-js'

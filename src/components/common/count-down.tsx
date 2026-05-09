@@ -13,7 +13,7 @@ type CountDown = {
 const CountDown: FC<CountDown> = ({ value, prefix, suffx, onFinish }) => {
     //由于父传子的props不可更改，调用usestate保存其值
     const [count, setCount] = useState(value)
-    const timerRef = useRef<number>()
+    const timerRef = useRef<ReturnType<typeof setInterval>>()
 
 
     //首次渲染时，创建定时器

@@ -9,7 +9,7 @@ import { setToken } from '@/store/app-store'
 
 //------------登录---------------
 const Login: FC = () => {
-    let [searchParams, setSearchParams] = useSearchParams()
+    let [searchParams] = useSearchParams()
     const loginFetcher = useFetcher()
 
 
@@ -55,6 +55,9 @@ const Login: FC = () => {
     )
 }
 
+
+export default Login
+
 export const action = async ({ request }: ActionFunctionArgs) => {
     const fd = await request.formData()
 
@@ -74,7 +77,3 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     return null
 
 }
-
-
-
-export default Login

@@ -1,14 +1,13 @@
 import type { FC } from 'react'
 import { Result, Button } from 'antd'
-import { useActionData, useLocation, useNavigate } from 'react-router-dom'
+import { useActionData, useNavigate } from 'react-router-dom'
 import { resetCurrent } from '@/store/art-add-store'
 
 const ArticleResult: FC = () => {
     const actionData = useActionData() as { msg: string } | null
     const navigate = useNavigate()
-    const loacation = useLocation()
 
-    console.log(loacation.state)
+
     const gotoList = () => {
         //触发导航
         navigate('/art-list')
