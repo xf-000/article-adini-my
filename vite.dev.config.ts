@@ -12,6 +12,8 @@ const devConfig: UserConfig = {
             minify: false,
             // 打包的入口
             entry: 'src/main.tsx',
+            //是否适配vite5.0以后的版本
+            viteNext: true,
             // 向网页中注入数据
             inject: {
                 //真正要注入到网页中的数据
