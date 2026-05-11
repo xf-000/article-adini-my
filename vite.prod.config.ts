@@ -60,7 +60,7 @@ const prodConfig: UserConfig = {
         }
     },
     build: {
-        //这是rollup的打包配置项
+        //这是rollup的打包配置项:
         rollupOptions: {
             output: {
                 // 按照文件类型，组织打包生成的资源文件（css, 图片等）
