@@ -46,9 +46,46 @@ const Figure = ({ delay }: { delay: number }) => (
     </div>
 )
 
+const DecorativeDivider = () => (
+    <div className={styles.divider}>
+        <span className={styles.dividerLine} />
+        <span className={styles.dividerIcon}>
+            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+            </svg>
+        </span>
+        <span className={styles.dividerLine} />
+    </div>
+)
+
+const InfoCard = ({ icon, label, value }: { icon: string; label: string; value: string }) => (
+    <div className={styles.infoCard}>
+        <span className={styles.cardIcon}>{icon}</span>
+        <span className={styles.cardLabel}>{label}</span>
+        <span className={styles.cardValue}>{value}</span>
+    </div>
+)
+
 const Home: FC = () => (
     <div className={styles.containerHome}>
         <h1 className={styles.title}>欢迎来到文章管理系统</h1>
+
+        <div className={styles.decorations}>
+            <DecorativeDivider />
+
+            <div className={styles.infoCards}>
+                <InfoCard icon="📚" label="文章" value="100+" />
+                <InfoCard icon="👥" label="用户" value="500+" />
+                <InfoCard icon="⭐" label="收藏" value="200+" />
+            </div>
+
+            <div className={styles.floatingDots}>
+                <span className={styles.dot} style={{ animationDelay: '0s' }} />
+                <span className={styles.dot} style={{ animationDelay: '0.5s' }} />
+                <span className={styles.dot} style={{ animationDelay: '1s' }} />
+            </div>
+        </div>
+
         <div className={styles.figures}>
             <Figure delay={0} />
             <Figure delay={100} />
