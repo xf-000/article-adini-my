@@ -1,14 +1,20 @@
 import router from '@/router'
 import useAppStore from '@/store/app-store'
-import { FC, PropsWithChildren } from 'react'
+import { FC, PropsWithChildren, useEffect } from 'react'
 import { matchRoutes, Navigate, useLocation, } from 'react-router-dom'
-
+import { listenLogout } from '@/store/resetters'
 
 
 
 const AuthRoot: FC<PropsWithChildren> = ({ children }) => {
     const location = useLocation()
     const tooken = useAppStore((store) => store.token)
+
+    useEffect(() => {
+        listenLogout(() => {
+            window.location.href = '/login'
+        })
+    }, [])
 
     //已登录,有tooken
     if (tooken) {

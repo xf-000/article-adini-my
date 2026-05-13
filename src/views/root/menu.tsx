@@ -81,6 +81,7 @@ const RootMenu: FC = () => {
 
     const [openKeys, setOpenKeys] = useState<string[]>([getOpenKey(menus, selectedKey)])
 
+    // 将被展开的子组件的所有key传入keys，用于控制展开的菜单
     const onOpenChange: MenuProps['onOpenChange'] = (keys) => {
         const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1)
         if (latestOpenKey && rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {

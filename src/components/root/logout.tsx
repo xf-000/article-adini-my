@@ -1,16 +1,15 @@
 import type { FC } from 'react'
 import { Button, Popconfirm } from 'antd'
 import { useNavigate } from 'react-router-dom'
-import { resetAllStore } from '@/store/resetters'
+import { resetAllStore, broadcastLogout } from '@/store/resetters'
 
 const Logout: FC = () => {
 
     const navigate = useNavigate()
 
     const confirm = () => {
-        //清空store
         resetAllStore()
-        //返回登陆页
+        broadcastLogout()
         navigate('/login')
 
     }
